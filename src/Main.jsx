@@ -3,6 +3,10 @@ import Editing from './Editing'
 import Task from './Task'
 import axios from 'axios';
 
+const api = axios.create({
+  baseURL: `https://to-do-node-mysql.herokuapp.com/api/tasks`
+})
+
 const Main = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [tasks, setTasks] = useState([]);
@@ -13,20 +17,25 @@ const Main = () => {
     setTasks (data)
   }
 
+  const addTask = async () => {
+    const response = api.post('/', {name: "Ramiro"})
+    setTasks(...tasks, response)
+  }
+
    useEffect( () => {
     getTasks();
-  }, [])
+  }, [tasks])
 
 
   return (
     <div className = "to_do_list_container">
       <h1>To-Do List</h1>
-      {tasks.tasks.map((task) => {
+      {tasks.tasks?.map((task) => {
         return <Task key = {task.id} name = {task.name}></Task>
       })}
       <div className = "main_input">
       <input type ="text"></input>
-      <button>Add</button>
+      <button onClick = {addTask}>Add</button>
       </div>
       <Editing />
     </div>
