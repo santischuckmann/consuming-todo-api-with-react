@@ -1,12 +1,12 @@
 import React from 'react'
 
-const Task = ({name, id, deleteTask}) => {
+const Task = ({name, id, deleteTask, updateTask}) => {
   return (
     <div className='task'>
       <input type ="checkbox" id = "checkbox"/>
       <label htmlFor= "checkbox">{name}</label>
-      <a href="#">Edit</a>
-      <button onClick = {() => deleteTask(id)}>Delete</button>
+      <button onClick = {() => updateTask(id)}>Edit</button>
+      <button style = {{background: "turquoise"}} onClick = {() => deleteTask(id)}>Delete</button>
     </div>
   )
 }

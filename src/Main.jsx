@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Editing from './Editing'
 import Task from './Task'
 import axios from 'axios';
 
@@ -8,7 +7,7 @@ const api = axios.create({
 })
 
 const Main = () => {
-  const [showEdit, setShowEdit] = useState(false);
+  const [showEdit, setShowEdit] = useState({state: false, editName: ""});
   const [tasks, setTasks] = useState([]);
   const taskName = useRef();
   const updatedTaskName = useRef();
@@ -45,8 +44,18 @@ const Main = () => {
   }
 
   const updateTask = async (id) => {
-    const name = {name: updatedTaskName.current.value}
-    await api.patch(`/${id}`, )
+    const taskAboutToEdit = tasks.find((task) => {
+      return task.id === id
+    })
+    setShowEdit({state: true, editName: taskAboutToEdit.name})
+    const newEditedName = {name : updatedTaskName.current.value}
+    await api.patch(`/${id}`, {name: newEditedName})
+    const clonedTasks = [...tasks]
+    const index = clonedTasks.indexOf({id: id})
+    clonedTasks[index] = {...taskAboutToEdit}
+    clonedTasks[index].name = newEditedName;
+    setTasks(clonedTasks)
+    updatedTaskName.current.value = "";
   }
 
    useEffect(() => {
@@ -58,13 +67,21 @@ const Main = () => {
     <div className = "to_do_list_container">
       <h1>To-Do List</h1>
       {tasks.map((task) => {
-        return <Task key = {task.id} name = {task.name} deleteTask = {deleteTask} {...task}></Task>
+        return <Task key = {task.id} name = {task.name} deleteTask = {deleteTask} updateTask = {updateTask} {...task}></Task>
       })}
       <div className = "main_input">
       <input type ="text" ref ={taskName}></input>
       <button onClick={addTask}>Add</button>
       </div>
-      <Editing />
+      {showEdit.state && 
+      <div className='editing_task'>
+        <h2>Editing task "{showEdit.name}"</h2>
+        <input type="text" ref = {updatedTaskName}></input>
+        <div className='editing_task_buttons'> 
+          <button>Save</button>
+          <button>Cancel</button>
+        </div>
+      </div>}
     </div>
   )
 }
