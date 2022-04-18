@@ -7,7 +7,7 @@ const api = axios.create({
 })
 
 const Main = () => {
-  const [showEdit, setShowEdit] = useState({state: false, editName: ""});
+  const [showEdit, setShowEdit] = useState({state: false, editName: "", editId: 0});
   const [tasks, setTasks] = useState([]);
   const taskName = useRef();
   const updatedTaskName = useRef();
@@ -16,7 +16,6 @@ const Main = () => {
     try {
       const response = await api.get('/');
       setTasks(response.data.tasks)
-      console.log(response.data.tasks)
     } catch (err) {
       if (err.response) {
         console.log(err.response.data)
@@ -36,18 +35,28 @@ const Main = () => {
   const deleteTask = async (id) => {
     await api.delete(`/${id}`)
     const newTasks = tasks.filter((task) => {
-      if (task.id !== id) {
-        return task
-      }
+      return task.id !== id
+      
     })
     setTasks(newTasks)
+  }
+
+  const findTaskById = (id) => {
+    
+  }
+
+  const editTask = (id) => {
+    const taskAboutToEdit = tasks.find((task) => {
+      return task.id === id
+    })
+    setShowEdit({state: true, editName: taskAboutToEdit.name, editId: id})
   }
 
   const updateTask = async (id) => {
     const taskAboutToEdit = tasks.find((task) => {
       return task.id === id
     })
-    setShowEdit({state: true, editName: taskAboutToEdit.name})
+    setShowEdit({state: true, editName: taskAboutToEdit.name, editId: id})
     const newEditedName = {name : updatedTaskName.current.value}
     await api.patch(`/${id}`, {name: newEditedName})
     const clonedTasks = [...tasks]
@@ -58,6 +67,8 @@ const Main = () => {
     updatedTaskName.current.value = "";
   }
 
+  
+
    useEffect(() => {
     getTasks();
   }, [])
@@ -67,7 +78,7 @@ const Main = () => {
     <div className = "to_do_list_container">
       <h1>To-Do List</h1>
       {tasks.map((task) => {
-        return <Task key = {task.id} name = {task.name} deleteTask = {deleteTask} updateTask = {updateTask} {...task}></Task>
+        return <Task key = {task.id} name = {task.name} deleteTask = {deleteTask} editTask = {editTask} {...task}></Task>
       })}
       <div className = "main_input">
       <input type ="text" ref ={taskName}></input>
@@ -75,7 +86,7 @@ const Main = () => {
       </div>
       {showEdit.state && 
       <div className='editing_task'>
-        <h2>Editing task "{showEdit.name}"</h2>
+        <h2>Editing task "{showEdit.editName}"</h2>
         <input type="text" ref = {updatedTaskName}></input>
         <div className='editing_task_buttons'> 
           <button>Save</button>
