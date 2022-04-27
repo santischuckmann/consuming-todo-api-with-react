@@ -77,7 +77,7 @@ const Main = () => {
       <h1>To-Do List</h1>
       <div className='tasks'>
       {tasks.map((task) => {
-        return <Task key = {task.id} name = {task.name} deleteTask = {deleteTask} editTask = {editTask} {...task}></Task>
+        return <Task key = {task.id} name = {task.name} deleteTask = {deleteTask} editTask = {editTask} {...task} doneness = {task.isDone}></Task>
       })}
       </div>
       <div className = "main_input">
