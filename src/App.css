@@ -33,7 +33,9 @@ body {
 .task {
   display: flex;
   flex-direction: row;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  color: #111;
+  font-weight: 600;
   gap: 2rem;
   margin: 1rem
 }

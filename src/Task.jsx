@@ -6,23 +6,22 @@ const api = axios.create({
 })
 
 const Task = ({name, id, deleteTask, editTask, doneness}) => {
-  const [isDone, setIsDone] = useState(doneness);
-  const checkbox = useRef();
+  const [isDone, setIsDone] = useState(doneness)
 
-  const handleCheckbox = async (id) => {
-    if (checkbox.checked) {
-      await api.patch(`/${id}`, {name: name, isDone: false})
-      setIsDone(false);
-    } else {
+  const handleDoneness = async (id) => {
+    if (!isDone) {
       await api.patch(`/${id}`, {name: name, isDone: true})
-      setIsDone(true);
+      setIsDone(true)
+    } else {    
+      await api.patch(`/${id}`, {name: name, isDone: false})
+      setIsDone(false)
     }
   }
   return (
     <div className='task'>
       <div className='nameTasks'>
-        <input onClick ={() => handleCheckbox(id)} ref = {checkbox} type ="checkbox" id = "checkbox" checked = {isDone}/>
-        <label htmlFor= "checkbox">{name}</label>
+        <button onClick = {() => handleDoneness(id)} className ="isDone">✅</button>
+        <label htmlFor= "checkbox">{isDone ? <strike style = {{"color" : "#555"}}>{name}</strike> : name}</label>
       </div>
         <button onClick = {() => editTask(id)}>Edit</button>
         <button style = {{background: "turquoise"}} onClick = {() => deleteTask(id)}>Delete</button>
@@ -30,4 +29,4 @@ const Task = ({name, id, deleteTask, editTask, doneness}) => {
   )
 }
 
-export default Task
+export default Task;
