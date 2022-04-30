@@ -62,7 +62,7 @@ const Main = () => {
     console.log(indexOfTask)
     clonedTasks[indexOfTask] = {...taskAboutToEdit}
     console.log(clonedTasks[indexOfTask])
-    clonedTasks[indexOfTask].name = newEditedName;
+    clonedTasks[indexOfTask].name =  checkingNullString;
     setTasks(clonedTasks)
     updatedTaskName.current.value = "";
     setManageEdition({state: false, editName: "", editId: 0})
