@@ -27,7 +27,8 @@ const Main = () => {
   }
 
   const addTask = async () => {
-    const name =  {name: taskName.current.value}
+    const checkingNullString = taskName.current.value ? taskName.current.value : "New task";
+    const name =  {name: checkingNullString}
     await api.post('/', name)
     setTasks([...tasks, name])
     taskName.current.value = ""
@@ -54,7 +55,8 @@ const Main = () => {
       return task.id === id
     })
     let newEditedName = updatedTaskName.current.value;
-    await api.patch(`/${id}`, {name: newEditedName})
+    const checkingNullString = newEditedName ? newEditedName : "Updated but not named";
+    await api.patch(`/${id}`, {name: checkingNullString})
     const clonedTasks = tasks
     const indexOfTask = clonedTasks.findIndex(task => task.id === id)
     console.log(indexOfTask)
