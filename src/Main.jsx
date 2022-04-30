@@ -76,7 +76,7 @@ const Main = () => {
 
   return (
     <div className = "to_do_list_container">
-      <h1>To-Do List</h1>
+      <h1>Your tasks</h1>
       <div className='tasks'>
       {tasks.map((task) => {
         return <Task key = {task.id} name = {task.name} deleteTask = {deleteTask} editTask = {editTask} {...task} doneness = {task.isDone}></Task>
