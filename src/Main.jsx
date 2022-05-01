@@ -9,6 +9,7 @@ const api = axios.create({
 const Main = () => {
   const [manageEdition, setManageEdition] = useState({state: false, editName: "", editId: 0});
   const [tasks, setTasks] = useState([]);
+  const [isModalOpened, setIsModalOpened] = useState(false)
   const taskName = useRef();
   const updatedTaskName = useRef();
 
@@ -68,24 +69,26 @@ const Main = () => {
     setManageEdition({state: false, editName: "", editId: 0})
   }
 
-
    useEffect(() => {
     getTasks();
   }, [])
 
 
   return (
-    <div className = "to_do_list_container">
+    <div className = "to_do_list_container" data-modal-dismiss = "add-task-modal">
       <h1>Your tasks</h1>
       <div className='tasks'>
       {tasks.map((task) => {
         return <Task key = {task.id} name = {task.name} deleteTask = {deleteTask} editTask = {editTask} {...task} doneness = {task.isDone}></Task>
       })}
       </div>
-      <div className = "main_input">
-      <input type ="text" ref ={taskName}></input>
-      <button onClick={addTask}>Add</button>
-      </div>
+      <button className = 'add_button' onClick={() => setIsModalOpened(true)} >Add</button>
+      <dialog className = 'add_task_modal' open = {isModalOpened}>
+        <h2>Add a task!</h2>
+        <input className = "add_task_input" ref = {taskName}></input>
+        <button onClick={() => addTask && setIsModalOpened(false)}>Confirm</button>
+        <button className="close_modal" onClick={() => setIsModalOpened(false)}>Close modal</button>
+      </dialog>
       {manageEdition.state && 
       <div className='editing_task'>
         <h2>Editing task "{manageEdition.editName}" de id {manageEdition.editId}</h2>
