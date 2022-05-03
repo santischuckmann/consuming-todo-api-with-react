@@ -48,6 +48,11 @@ body {
   transform: translateX(-50%) translateY(-140%)
 }
 
+.add_task_modal::backdrop {
+  background-color: red;
+  z-index: 1;
+}
+
 .nameTasks {
   display: flex;
   gap: 0.5rem;
@@ -75,22 +80,23 @@ body {
 
 .task button {
   font-size: 1.3rem;
+  padding-top: 0;
+  border-radius: 10px;
+  border: 0;
+  font-weight: 500;
 }
 
-.main_input {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  width: 100%;
-  justify-content: center;
+
+.task .editButton {
+  background-color: #5af;
 }
 
-.main_input input{
-  width: 50%;
+.task .deleteButton {
+  background-color: tomato;
 }
-
-.main_input button {
-  font-size: 1.3rem;
+.task .nameTasks button {
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
 }
 
 .editing_task {

@@ -23,8 +23,8 @@ const Task = ({name, id, deleteTask, editTask, doneness}) => {
         <button onClick = {() => handleDoneness(id)} className ="isDone">✅</button>
         <label htmlFor= "checkbox">{isDone ? <strike style = {{"color" : "#555"}}>{name}</strike> : name}</label>
       </div>
-        <button onClick = {() => editTask(id)}>Edit</button>
-        <button style = {{background: "turquoise"}} onClick = {() => deleteTask(id)}>Delete</button>
+        <button className = 'editButton' onClick = {() => editTask(id)}>📝</button>
+        <button className='deleteButton' onClick = {() => deleteTask(id)}>x</button>
     </div>
   )
 }

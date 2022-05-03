@@ -33,6 +33,7 @@ const Main = () => {
     await api.post('/', name)
     setTasks([...tasks, name])
     taskName.current.value = ""
+    setIsModalOpened(false)
   }
 
   const deleteTask = async (id) => {
@@ -86,12 +87,12 @@ const Main = () => {
       <dialog className = 'add_task_modal' open = {isModalOpened}>
         <h2>Add a task!</h2>
         <input className = "add_task_input" ref = {taskName}></input>
-        <button onClick={() => addTask && setIsModalOpened(false)}>Confirm</button>
+        <button onClick={addTask}>Confirm</button>
         <button className="close_modal" onClick={() => setIsModalOpened(false)}>Close modal</button>
       </dialog>
       {manageEdition.state && 
       <div className='editing_task'>
-        <h2>Editing task "{manageEdition.editName}" de id {manageEdition.editId}</h2>
+        <h2>Editing task "{manageEdition.editName}"</h2>
         <input type="text" ref = {updatedTaskName}></input>
         <div className='editing_task_buttons'> 
           <button onClick = {() => updateTask(manageEdition.editId)}>Save</button>
