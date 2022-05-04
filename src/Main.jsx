@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Task from './Task'
 import axios from 'axios';
+import Navbar from './Navbar';
 
 const api = axios.create({
   baseURL: `https://to-do-node-mysql.herokuapp.com/api/tasks`
 })
 
 const Main = () => {
-  const [manageEdition, setManageEdition] = useState({state: false, editName: "", editId: 0});
+  const [manageEdition, setManageEdition] = useState({modalOpened: false, editName: "", editId: 0});
   const [tasks, setTasks] = useState([]);
   const [isModalOpened, setIsModalOpened] = useState(false)
   const taskName = useRef();
@@ -49,7 +50,7 @@ const Main = () => {
     const taskAboutToEdit = tasks.find((task) => {
       return task.id === id
     })
-    setManageEdition({state: true, editName: taskAboutToEdit.name, editId: id})
+    setManageEdition({modalOpened: true, editName: taskAboutToEdit.name, editId: id})
   }
 
   const updateTask = async (id) => {
@@ -67,7 +68,7 @@ const Main = () => {
     clonedTasks[indexOfTask].name =  checkingNullString;
     setTasks(clonedTasks)
     updatedTaskName.current.value = "";
-    setManageEdition({state: false, editName: "", editId: 0})
+    setManageEdition({modalOpened: false, editName: "", editId: 0})
   }
 
    useEffect(() => {
@@ -76,6 +77,8 @@ const Main = () => {
 
 
   return (
+    <>
+    <Navbar />
     <div className = "to_do_list_container" data-modal-dismiss = "add-task-modal">
       <h1>Your tasks</h1>
       <div className='tasks'>
@@ -86,21 +89,19 @@ const Main = () => {
       <button className = 'add_button' onClick={() => setIsModalOpened(true)} >Add</button>
       <dialog className = 'add_task_modal' open = {isModalOpened}>
         <h2>Add a task!</h2>
-        <input className = "add_task_input" ref = {taskName}></input>
+        <input type = "text" className = "add_task_input" ref = {taskName}></input>
         <button onClick={addTask}>Confirm</button>
         <button className="close_modal" onClick={() => setIsModalOpened(false)}>Close modal</button>
       </dialog>
-      {manageEdition.state && 
-      <div className='editing_task'>
-        <h2>Editing task "{manageEdition.editName}"</h2>
-        <input type="text" ref = {updatedTaskName}></input>
-        <div className='editing_task_buttons'> 
-          <button onClick = {() => updateTask(manageEdition.editId)}>Save</button>
-          <button onClick = {() => setManageEdition({state: false})}> Cancel</button>
-        </div>
-      </div>}
+      <dialog className = 'add_task_modal' open = {manageEdition.modalOpened}>
+        <h2>Edit a task!</h2>
+        <input className = "add_task_input" ref = {updatedTaskName}></input>
+        <button onClick={() => updateTask (manageEdition.editId)}>Confirm</button>
+        <button className="close_modal" onClick={() => setManageEdition({modalOpened: false})}>Close modal</button>
+      </dialog>
     </div>
+    </>
   )
 }
 
-export default Main
+export default Main;

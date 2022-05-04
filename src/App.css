@@ -1,4 +1,4 @@
-:root{
+:root {
   font-size: 62.5%;
   padding: 0;
   margin: 0;
@@ -12,6 +12,8 @@ button {
 }
 
 body {
+  padding: 0;
+  margin: 0;
   background: rgb(219, 219, 219);
 }
 
