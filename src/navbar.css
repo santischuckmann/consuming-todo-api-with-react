@@ -28,9 +28,21 @@ h2 {
   font-size: 2rem;
   padding: 0;
   margin: 0;
+  padding: 1rem;
+}
+
+.icons :hover {
+  background-color: rgb(121, 193, 196);
+  cursor: pointer;
 }
 
 .icons a{
-  padding: 0;
+  padding: 1rem;
   margin-top: 5px;
+  color: black;
+}
+
+.icons a:hover {
+  background-color: inherit;
+  font-size: 2.2rem;
 }

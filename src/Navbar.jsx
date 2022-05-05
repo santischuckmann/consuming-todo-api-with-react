@@ -9,7 +9,7 @@ const Navbar = ({modal}) => {
       <div className='icons'>
         <button onClick = {() => modal("add")}>Add a task</button>
         <button onClick = {() => modal("edit")}>Delete all tasks</button>
-        <a href = "www.github.com/santischuckmann/consuming-api-with-react"><FaCode className='icon'/></a>
+        <a href = "www.github.com/santischuckmann/consuming-todo-api-with-react" rel="noreferrer" target = "_blank"><FaCode className='icon'/></a>
       </div>
     </nav>
   )
