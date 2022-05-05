@@ -28,6 +28,10 @@ const Main = () => {
     }
   }
 
+  const openModalFromAnotherComponent = (typeOfFunction) => {
+    return typeOfFunction === "add" ? setIsModalOpened(true) : setManageEdition({modalOpened: true})
+  }
+
   const addTask = async () => {
     const checkingNullString = taskName.current.value ? taskName.current.value : "New task";
     const name =  {name: checkingNullString}
@@ -78,7 +82,7 @@ const Main = () => {
 
   return (
     <>
-    <Navbar />
+    <Navbar modal = {openModalFromAnotherComponent}/>
     <div className = "to_do_list_container" data-modal-dismiss = "add-task-modal">
       <h1>Your tasks</h1>
       <div className='tasks'>
@@ -86,7 +90,6 @@ const Main = () => {
         return <Task key = {task.id} name = {task.name} deleteTask = {deleteTask} editTask = {editTask} {...task} doneness = {task.isDone}></Task>
       })}
       </div>
-      <button className = 'add_button' onClick={() => setIsModalOpened(true)} >Add</button>
       <dialog className = 'add_task_modal' open = {isModalOpened}>
         <h2>Add a task!</h2>
         <input type = "text" className = "add_task_input" ref = {taskName}></input>
