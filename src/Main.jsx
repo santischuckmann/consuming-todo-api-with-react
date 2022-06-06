@@ -41,6 +41,12 @@ const Main = () => {
     setIsModalOpened(false)
   }
 
+  const deleteAllTasks = async (id) => {
+    await api.delete('/')
+    const newTasks = {};
+    setTasks(newTasks)
+  }
+
   const deleteTask = async (id) => {
     await api.delete(`/${id}`)
     const newTasks = tasks.filter((task) => {
@@ -82,7 +88,8 @@ const Main = () => {
 
   return (
     <>
-    <Navbar modal = {openModalFromAnotherComponent}/>
+    <Navbar modal = {openModalFromAnotherComponent}
+    deleteAllTasks = {deleteAllTasks} />
     <div className = "to_do_list_container" data-modal-dismiss = "add-task-modal">
       <h1>Your tasks</h1>
       <div className='tasks'>
