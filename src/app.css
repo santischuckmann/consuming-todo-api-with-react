@@ -1,0 +1,140 @@
+:root {
+  font-size: 62.5%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+button {
+  font-size: 62.5%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  background: rgb(219, 219, 219);
+}
+
+
+.to_do_list_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 30vw;
+  margin: auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.to_do_list_container h1 {
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+.add_button {
+  width: 20%;
+  font-size: 1.5rem;
+  border: none;
+  padding: 0.5rem;
+}
+
+.add_task_modal {
+  margin: 0;
+  border: 1px solid black;
+  width: 20rem;
+  font-size: 2rem;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-140%)
+}
+
+.add_task_modal::backdrop {
+  background-color: red;
+  z-index: 1;
+}
+
+.nameTasks {
+  margin-right: auto;
+  display: flex;
+  gap: 0.5rem;
+  width: 70%;
+}
+
+.task {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.8rem;
+  color: #111;
+  font-weight: 600;
+  gap: 2rem;
+  margin: 1rem;
+  justify-content: right;
+  max-width: 30vw;
+}
+
+.to_do_list_container input {
+  margin: 0;
+  margin-top: 0.3rem;
+}
+
+.task a {
+  justify-self: flex-end;
+}
+
+.task button {
+  font-size: 1.3rem;
+  padding-top: 0;
+  border-radius: 10px;
+  border: 0;
+  font-weight: 500;
+}
+
+
+.task .editButton {
+  background-color: #5af;
+}
+
+.task .deleteButton {
+  background-color: tomato;
+}
+.task .nameTasks button {
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+}
+
+.editing_task {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.editing_task_buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+@media screen and (max-width: 768px) {
+  .to_do_list_container {
+    width: 90vw;
+    max-width: 90vw;
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 10px solid #f3f3f3; /* Light grey */
+  border-top: 10px solid #383636; /* Black */
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+}
