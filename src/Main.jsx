@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Task from './Task'
 import axios from 'axios';
 import Navbar from './Navbar';
+import Spinner from './Spinner'
 
 const api = axios.create({
   baseURL: `https://to-do-node-mysql.herokuapp.com/api/tasks`
@@ -9,6 +10,7 @@ const api = axios.create({
 
 const Main = () => {
   const [manageEdition, setManageEdition] = useState({modalOpened: false, editName: "", editId: 0});
+  const [ isLoading, setIsLoading ] = useState(true)
   const [tasks, setTasks] = useState([]);
   const [isModalOpened, setIsModalOpened] = useState(false)
   const taskName = useRef();
@@ -25,6 +27,8 @@ const Main = () => {
       } else {
         console.log(`Error: ${err.message}`)
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -41,9 +45,9 @@ const Main = () => {
     setIsModalOpened(false)
   }
 
-  const deleteAllTasks = async (id) => {
+  const deleteAllTasks = async () => {
     await api.delete('/')
-    const newTasks = {};
+    const newTasks = [];
     setTasks(newTasks)
   }
 
@@ -93,6 +97,7 @@ const Main = () => {
     <div className = "to_do_list_container" data-modal-dismiss = "add-task-modal">
       <h1>Your tasks</h1>
       <div className='tasks'>
+      {isLoading && <Spinner />}
       {tasks.map((task) => {
         return <Task key = {task.id} name = {task.name} deleteTask = {deleteTask} editTask = {editTask} {...task} doneness = {task.isDone}></Task>
       })}
