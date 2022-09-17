@@ -9,13 +9,8 @@ const Task = ({name, id, deleteTask, editTask, doneness}) => {
   const [isDone, setIsDone] = useState(doneness)
 
   const handleDoneness = async (id) => {
-    if (!isDone) {
-      await api.patch(`/${id}`, {name: name, isDone: true})
-      setIsDone(true)
-    } else {    
-      await api.patch(`/${id}`, {name: name, isDone: false})
-      setIsDone(false)
-    }
+    setIsDone(!isDone)
+    await api.patch(`/${id}`, {name: name, isDone: !isDone})
   }
   return (
     <div className='task'>

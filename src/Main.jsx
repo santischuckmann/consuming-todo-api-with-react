@@ -9,7 +9,11 @@ const api = axios.create({
 })
 
 const Main = () => {
-  const [manageEdition, setManageEdition] = useState({modalOpened: false, editName: "", editId: 0});
+  const [manageEdition, setManageEdition] = useState({
+    modalOpened: false, 
+    editId: 0,
+    previousInput: ''
+  });
   const [ isLoading, setIsLoading ] = useState(true)
   const [tasks, setTasks] = useState([]);
   const [isModalOpened, setIsModalOpened] = useState(false)
@@ -32,57 +36,48 @@ const Main = () => {
     }
   }
 
-  const openModalFromAnotherComponent = (typeOfFunction) => {
-    return typeOfFunction === "add" ? setIsModalOpened(true) : setManageEdition({modalOpened: true})
-  }
+  const openModalFromAnotherComponent = () => setIsModalOpened(true)
 
   const addTask = async () => {
     const checkingNullString = taskName.current.value ? taskName.current.value : "New task";
     const name =  {name: checkingNullString}
-    await api.post('/', name)
-    setTasks([...tasks, name])
+    setTasks((prev) => [...prev, name])
     taskName.current.value = ""
     setIsModalOpened(false)
+    await api.post('/', name)
   }
 
   const deleteAllTasks = async () => {
     await api.delete('/')
-    const newTasks = [];
-    setTasks(newTasks)
+    setTasks([])
   }
 
   const deleteTask = async (id) => {
-    await api.delete(`/${id}`)
     const newTasks = tasks.filter((task) => {
       return task.id !== id
       
     })
     setTasks(newTasks)
+    await api.delete(`/${id}`)
   }
 
   const editTask = (id) => {
-    const taskAboutToEdit = tasks.find((task) => {
-      return task.id === id
-    })
-    setManageEdition({modalOpened: true, editName: taskAboutToEdit.name, editId: id})
+    const taskAboutToEdit = tasks.find(task => task.id === id)
+    setManageEdition({modalOpened: true, previousInput: taskAboutToEdit.name, editId: id})
   }
 
   const updateTask = async (id) => {
-    const taskAboutToEdit = tasks.find((task) => {
-      return task.id === id
-    })
+    const taskAboutToEdit = tasks.find(task => task.id === id)
     let newEditedName = updatedTaskName.current.value;
-    const checkingNullString = newEditedName ? newEditedName : "Updated but not named";
-    await api.patch(`/${id}`, {name: checkingNullString})
+    const checkingNullString = newEditedName ? newEditedName : taskAboutToEdit.name;
     const clonedTasks = tasks
     const indexOfTask = clonedTasks.findIndex(task => task.id === id)
-    console.log(indexOfTask)
     clonedTasks[indexOfTask] = {...taskAboutToEdit}
-    console.log(clonedTasks[indexOfTask])
     clonedTasks[indexOfTask].name =  checkingNullString;
     setTasks(clonedTasks)
     updatedTaskName.current.value = "";
-    setManageEdition({modalOpened: false, editName: "", editId: 0})
+    setManageEdition({modalOpened: false, editId: 0})
+    await api.patch(`/${id}`, {name: checkingNullString})
   }
 
    useEffect(() => {
@@ -110,7 +105,10 @@ const Main = () => {
       </dialog>
       <dialog className = 'add_task_modal' open = {manageEdition.modalOpened}>
         <h2>Edit a task!</h2>
-        <input className = "add_task_input" ref = {updatedTaskName}></input>
+        <input 
+        className = "add_task_input" 
+        ref = {updatedTaskName}
+        value= {manageEdition.previousInput} />
         <button onClick={() => updateTask (manageEdition.editId)}>Confirm</button>
         <button className="close_modal" onClick={() => setManageEdition({modalOpened: false})}>Close modal</button>
       </dialog>
